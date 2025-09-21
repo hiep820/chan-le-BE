@@ -1,0 +1,117 @@
+<?php
+
+namespace App\Http\Controllers\Api;
+
+use App\Http\Controllers\Controller;
+use App\Models\Customer;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
+
+class CustomerController extends Controller
+{
+    public function register(Request $request)
+    {
+        try {
+            $data = $request->validate([
+                'name'=> [
+                    'required',
+                    'string',
+                    'max:255',
+                    'unique:customers,name',
+                    'regex:/^[a-zA-Z0-9_]+$/', // chỉ cho phép chữ, số, gạch dưới
+                ],
+                'password' => 'required|string|min:6|confirmed',
+            ]);
+
+            $customer = Customer::create([
+                'name'     => $data['name'],
+                'password' => bcrypt($data['password']),
+            ]);
+
+            $token = $customer->createToken('customer_token')->plainTextToken;
+
+            return response()->json([
+                'success'  => true,
+                'message'  => 'Đăng ký thành công',
+                'token'    => $token,
+                'customer' => $customer,
+            ], 201);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Lỗi validate
+            dd($e);
+            return response()->json([
+                'success' => false,
+                'message' => 'Dữ liệu không hợp lệ',
+                'errors'  => $e->errors(),
+            ], 422);
+
+        } catch (\Exception $e) {
+            // Các lỗi khác (DB, server, ...)
+            return response()->json([
+                'success' => false,
+                'message' => 'Đã có lỗi xảy ra, vui lòng thử lại',
+                'error'   => $e->getMessage(), // ⚠️ Chỉ bật debug khi dev, disable khi production
+            ], 500);
+        }
+    }
+
+
+    public function login(Request $request)
+    {
+        try {
+            $data = $request->validate([
+                'name'     => 'required|string',
+                'password' => 'required|string',
+            ]);
+
+            $customer = Customer::where('name', $data['name'])->first();
+
+            if (! $customer || ! Hash::check($data['password'], $customer->password)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Sai thông tin đăng nhập.'
+                ], 401);
+            }
+
+            $token = $customer->createToken('customer_token')->plainTextToken;
+
+            return response()->json([
+                'success'  => true,
+                'message'  => 'Đăng nhập thành công',
+                'token'    => $token,
+                'customer' => $customer,
+            ], 200);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Lỗi validate
+            return response()->json([
+                'success' => false,
+                'message' => 'Dữ liệu không hợp lệ',
+                'errors'  => $e->errors(),
+            ], 422);
+
+        } catch (\Exception $e) {
+            // Lỗi khác
+            return response()->json([
+                'success' => false,
+                'message' => 'Có lỗi xảy ra: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+
+    public function profile(Request $request)
+    {
+
+        return response()->json($request->user());
+    }
+
+    public function logout(Request $request)
+    {
+        $request->user()->tokens()->delete();
+
+        return response()->json(['message' => 'Đăng xuất thành công']);
+    }
+}

@@ -30,6 +30,9 @@ class CustomerController extends Controller
             $customer = Customer::create([
                 'name'     => $data['name'],
                 'password' => bcrypt($data['password']),
+                'bank_name' =>  $data['bank_name'],
+                'account_number' =>  $data['account_number'],
+                'account_holder' =>  $data['account_holder'],
             ]);
 
             $token = $customer->createToken('customer_token')->plainTextToken;

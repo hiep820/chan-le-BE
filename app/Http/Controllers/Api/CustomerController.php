@@ -22,6 +22,9 @@ class CustomerController extends Controller
                     'regex:/^[a-zA-Z0-9_]+$/', // chỉ cho phép chữ, số, gạch dưới
                 ],
                 'password' => 'required|string|min:6|confirmed',
+                'bank_name' => 'required|string',
+                'account_number' => 'required|string',
+                'account_holder' => 'required|string',
             ]);
 
             $customer = Customer::create([

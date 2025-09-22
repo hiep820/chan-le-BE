@@ -9,6 +9,7 @@ use App\Filament\Resources\Customers\Schemas\CustomerForm;
 use App\Filament\Resources\Customers\Tables\CustomersTable;
 use App\Models\Customer;
 use BackedEnum;
+use Filament\Actions\Action;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -49,7 +50,14 @@ class CustomerResource extends Resource
             TextColumn::make('account_holder')->label('Chủ tài khoản')->searchable()->sortable(),
             TextColumn::make('created_at')
                 ->dateTime(),
-        ]);
+        ])
+        ->actions([
+                Action::make('CustomeTransaction')
+                    ->label('Lịch sử chơi')
+                    ->icon('heroicon-o-wallet')
+                    ->url(fn($record) => static::getUrl('CustomeTransactions', ['record' => $record->id])),
+            ]);
+
     }
 
     public static function getRelations(): array
@@ -65,6 +73,7 @@ class CustomerResource extends Resource
             'index' => ListCustomers::route('/'),
             'create' => CreateCustomer::route('/create'),
             'edit' => EditCustomer::route('/{record}/edit'),
+            'CustomeTransactions' => Pages\CustomeTransactions::route('/{record}/CustomeTransactions'),
         ];
     }
 }

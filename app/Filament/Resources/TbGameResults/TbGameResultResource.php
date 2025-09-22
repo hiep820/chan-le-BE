@@ -46,12 +46,12 @@ class TbGameResultResource extends Resource
         return $table
         ->columns([
             TextColumn::make('id')->sortable(),
-            TextColumn::make('transaction_id')->sortable(),
-            TextColumn::make('customer.name')->sortable()->label('Tên người chơi')->searchable()->sortable(),
-            TextColumn::make('game_name')->label('Trò chơi')->sortable()->searchable(),
-            TextColumn::make('bet_key')->label('Đã chọn')->sortable()->searchable(),
-            TextColumn::make('reference_number')->label('Mã giao dịch')->sortable()->searchable(),
-            TextColumn::make('amount')->label('Tiền cược')->sortable(),
+            TextColumn::make('transaction_id')->sortable()->toggleable(),
+            TextColumn::make('customer.name')->sortable()->label('Tên người chơi')->searchable()->sortable()->toggleable(),
+            TextColumn::make('game_name')->label('Trò chơi')->sortable()->searchable()->toggleable(),
+            TextColumn::make('bet_key')->label('Đã chọn')->sortable()->searchable()->toggleable(),
+            TextColumn::make('reference_number')->label('Mã giao dịch')->sortable()->searchable()->toggleable(),
+            TextColumn::make('amount')->label('Tiền cược')->sortable() ->toggleable(),
             TextColumn::make('result')
             ->sortable()
             ->badge()
@@ -61,7 +61,8 @@ class TbGameResultResource extends Resource
                 'pending' => 'warning', // Màu vàng
                 default => 'gray', // Màu xám cho các giá trị khác
             }),
-            TextColumn::make('reward_amount')->label('Tiền thắng')->sortable(),
+            TextColumn::make('reward_amount')->label('Tiền thắng')->sortable()->toggleable(),
+            TextColumn::make('note')->sortable(),
             // TextColumn::make('is_paid')
             // ->sortable()
             // ->toggleable()
@@ -93,7 +94,7 @@ class TbGameResultResource extends Resource
             ->offColor('danger')                  // màu khi false
             ->disabled(fn ($record) => $record?->result === 'lose'),
 
-            TextColumn::make('transaction_date')->dateTime(),
+            TextColumn::make('transaction_date')->dateTime()->sortable()->toggleable(),
             TextColumn::make('created_at')->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true),
         ])
         ->filters([

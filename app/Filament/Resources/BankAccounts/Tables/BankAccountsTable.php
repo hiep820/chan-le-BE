@@ -7,6 +7,7 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 
 class BankAccountsTable
@@ -38,7 +39,12 @@ class BankAccountsTable
                 ->disk('public')
                 ->width(100)
                 ->height(100),
-
+            ToggleColumn::make('active_is')
+                ->label('Trạng thái')
+                ->sortable()
+                ->onIcon('heroicon-o-check-circle')   
+                ->onColor('success')                 
+                ->offColor('danger'),                
         ])
             ->filters([
                 //

@@ -49,13 +49,14 @@ class CustomerResource extends Resource
             TextColumn::make('account_number')->label('Số tài khoản')->searchable()->sortable(),
             TextColumn::make('account_holder')->label('Chủ tài khoản')->searchable()->sortable(),
             TextColumn::make('created_at')
-                ->dateTime(),
+            ->dateTime('d/m/Y H:i') // format theo Carbon
+            ->sortable(),
         ])
         ->actions([
-                Action::make('CustomeTransaction')
+                Action::make('customeTransactions')
                     ->label('Lịch sử chơi')
                     ->icon('heroicon-o-wallet')
-                    ->url(fn($record) => static::getUrl('CustomeTransactions', ['record' => $record->id])),
+                    ->url(fn($record) => static::getUrl('customeTransaction', ['record' => $record->id])),
             ]);
 
     }
@@ -73,7 +74,7 @@ class CustomerResource extends Resource
             'index' => ListCustomers::route('/'),
             'create' => CreateCustomer::route('/create'),
             'edit' => EditCustomer::route('/{record}/edit'),
-            'CustomeTransactions' => Pages\CustomeTransactions::route('/{record}/CustomeTransactions'),
+            'customeTransaction' => Pages\CustomeTransactions::route('/{record}/customeTransaction'),
         ];
     }
 }

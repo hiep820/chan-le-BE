@@ -23,6 +23,8 @@ class TbGameResult extends Model
         'is_paid',
         'note',
         'transaction_date',
+        'created_at',
+        'updated_at',
     ];
 
     public function transaction()

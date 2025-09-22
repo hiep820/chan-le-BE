@@ -57,9 +57,14 @@ class CustomeTransactions extends Page implements HasTable
             ->onColor('success')                  // màu khi true
             ->offColor('danger')                  // màu khi false
             ->disabled(fn ($record) => $record?->result === 'lose'),
-            TextColumn::make('transaction_date')->dateTime()->sortable()->toggleable(),
-            TextColumn::make('created_at')->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true),
-            ])
+            TextColumn::make('transaction_date')        ->dateTime('d/m/Y H:i') // format theo Carbon
+            ->sortable()
+            ->toggleable(),
+            TextColumn::make('created_at')
+            ->dateTime('d/m/Y H:i') // format theo Carbon
+            ->sortable()
+            ->toggleable(),
+        ])
             ->defaultSort('created_at', 'desc');
     }
 }

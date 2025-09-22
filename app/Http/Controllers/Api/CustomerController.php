@@ -47,7 +47,6 @@ class CustomerController extends Controller
 
         } catch (\Illuminate\Validation\ValidationException $e) {
             // Lỗi validate
-            dd($e);
             return response()->json([
                 'success' => false,
                 'message' => 'Dữ liệu không hợp lệ',

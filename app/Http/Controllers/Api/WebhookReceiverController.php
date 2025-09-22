@@ -22,8 +22,9 @@ class WebhookReceiverController extends Controller
                 die();
             }
             log::info('Webhook received: ' . json_encode($data));
-
+           
             $transaction_id = $data->id;
+            
             $gateway = $data->gateway;
             $transaction_date = $data->transactionDate;
             $account_number = $data->accountNumber;
@@ -61,6 +62,7 @@ class WebhookReceiverController extends Controller
                 if (!empty($data->content)) {
                     $this->processGame($transaction_id, $data->content, $data->referenceCode, $data->transferAmount, $data->transactionDate);
                 }
+
 
             return response()->json([
                 'status' => 'success',

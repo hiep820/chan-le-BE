@@ -114,4 +114,30 @@ class CustomerController extends Controller
 
         return response()->json(['message' => 'Đăng xuất thành công']);
     }
+
+    public function historyCustomer(Request $request)
+    {
+        try {
+            $customer = Customer::with('gameResults')->find($request->customer_id);
+            if (! $customer) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Người chơi không tồn tại.'
+                ], 404);
+            }
+            return response()->json([
+                'success'  => true,
+                'customer' => $customer,
+                'history'  => $customer->gameResults,
+            ], 200);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Dữ liệu không hợp lệ',
+                'errors'  => $e->errors(),
+            ], 422);
+        }
+    }
+
+
 }

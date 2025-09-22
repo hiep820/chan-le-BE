@@ -18,6 +18,7 @@ class BankAccount extends Model
         'qr_code',
         'max',
         'min',
+        'active_is',
     ];
 
     protected function fullImagePath(): Attribute

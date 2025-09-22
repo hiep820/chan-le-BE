@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
+use App\Models\TbGameResult;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
@@ -135,6 +137,26 @@ class CustomerController extends Controller
                 'success'  => true,
                 'customer' => $customer,
                 'history'  => $customer->gameResults,
+            ], 200);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Dữ liệu không hợp lệ',
+                'errors'  => $e->errors(),
+            ], 422);
+        }
+    }
+
+    public function totalBetDate(Request $request)
+    {
+        try {
+            $date = Carbon::now();
+
+            $sumAmount = TbGameResult::where('customer_id',$request->customer_id)->whereDate('created_at',$date)->sum('amount');
+
+            return response()->json([
+                'success'  => true,
+                'sum' => $sumAmount,
             ], 200);
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([

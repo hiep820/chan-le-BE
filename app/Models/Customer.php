@@ -27,4 +27,9 @@ class Customer extends Authenticatable
 
     protected $hidden = ['password', 'remember_token'];
 
+    public function gameResults()
+    {
+        return $this->hasMany(TbGameResult::class, 'customer_id');
+    }
+
 }

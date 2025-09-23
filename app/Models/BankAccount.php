@@ -21,6 +21,8 @@ class BankAccount extends Model
         'active_is',
     ];
 
+    protected $appends = ['full_image_path'];
+
     protected function fullImagePath(): Attribute
     {
         return Attribute::make(

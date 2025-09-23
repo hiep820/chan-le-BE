@@ -9,7 +9,9 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
+use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Table;
+use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 
 class CustomeTransactions extends Page implements HasTable
 {
@@ -65,6 +67,11 @@ class CustomeTransactions extends Page implements HasTable
             ->sortable()
             ->toggleable(),
         ])
-            ->defaultSort('created_at', 'desc');
+            ->defaultSort('created_at', 'desc')
+            ->filters([
+                DateRangeFilter::make('created_at')
+                ->label('Khoảng thời gian')
+                ->icon('heroicon-o-x-mark'),
+            ]);
     }
 }

@@ -16,6 +16,7 @@ use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
+use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 
 class TbGameResultResource extends Resource
 {
@@ -102,7 +103,9 @@ class TbGameResultResource extends Resource
             ->toggleable(),
         ])
         ->filters([
-            //
+            DateRangeFilter::make('created_at')
+            ->label('Khoảng thời gian')
+            ->icon('heroicon-o-x-mark'),
         ]);
     }
 

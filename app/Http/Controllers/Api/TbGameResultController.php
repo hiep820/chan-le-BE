@@ -16,7 +16,7 @@ class TbGameResultController extends Controller
     public function historyAll(Request $request)
     {
         try {
-            $gameResult = TbGameResult::where('result','win')->get();
+            $gameResult = TbGameResult::where('result','win')->take(10)->get();
             if (! $gameResult) {
                 return response()->json([
                     'success' => false,

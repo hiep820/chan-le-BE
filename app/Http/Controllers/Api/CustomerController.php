@@ -126,7 +126,9 @@ class CustomerController extends Controller
     public function historyCustomer(Request $request)
     {
         try {
-            $customer = Customer::with('gameResults')->find($request->customer_id);
+            $customer = Customer::with(['gameResults' => function ($query) {
+                $query->orderBy('created_at', 'desc')->take(10);
+            }])->find($request->customer_id);
             if (! $customer) {
                 return response()->json([
                     'success' => false,
@@ -147,12 +149,12 @@ class CustomerController extends Controller
         }
     }
 
-    public function totalBetDate(Request $request)
+    public function totalBetDate($id)
     {
         try {
             $date = Carbon::now();
 
-            $sumAmount = TbGameResult::where('customer_id',$request->customer_id)->whereDate('created_at',$date)->sum('amount');
+            $sumAmount = TbGameResult::where('customer_id',$id)->whereDate('created_at',$date)->sum('amount');
 
             return response()->json([
                 'success'  => true,

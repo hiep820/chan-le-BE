@@ -17,7 +17,7 @@ Route::prefix('customer')->group(function () {
         Route::get('/profile', [CustomerController::class, 'profile']);
         Route::post('/logout', [CustomerController::class, 'logout']);
         Route::get('/history', [CustomerController::class, 'historyCustomer']);
-        Route::get('/sum-amount', [CustomerController::class, 'totalBetDate']);
+        Route::get('/sum-amount/{id}', [CustomerController::class, 'totalBetDate']);
     });
 
 

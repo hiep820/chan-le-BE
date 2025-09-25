@@ -22,9 +22,9 @@ class WebhookReceiverController extends Controller
                 die();
             }
             log::info('Webhook received: ' . json_encode($data));
-           
+
             $transaction_id = $data->id;
-            
+
             $gateway = $data->gateway;
             $transaction_date = $data->transactionDate;
             $account_number = $data->accountNumber;
@@ -82,7 +82,7 @@ class WebhookReceiverController extends Controller
         $username = null;
         $bet_key  = null;
 
-        $validKeys = ['KA','KB','KC','KD','KAA','KBB','KCC','KDD','GBA','S','NM','NH','NB'];
+        $validKeys = ['BC','BL','BX','BT','KAA','KBB','KCC','KDD','GBA','S','NM','NH','NB'];
 
         $pattern = '/\b([a-zA-Z0-9_]+)\s+(' . implode('|', $validKeys) . ')\b/';
 
@@ -104,10 +104,10 @@ class WebhookReceiverController extends Controller
         // Mảng game
         $games = [
             'CLTX' => [
-                'KA' => [2, 4, 6, 8],
-                'KB' => [1, 3, 5, 7],
-                'KC' => [5, 6, 7, 8],
-                'KD' => [1, 2, 3, 4],
+                'BC' => [2, 4, 6, 8],
+                'BL' => [1, 3, 5, 7],
+                'BT' => [5, 6, 7, 8],
+                'BX' => [1, 2, 3, 4],
             ],
             'CLTX2' => [
                 'KBB' => [1, 3, 5, 7, 9],
